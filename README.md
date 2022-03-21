@@ -12,7 +12,7 @@
 ## News & Update Logs:
 - [x] [2022-03-17] Repo created. Paper, code, and data will come in a few days. Stay tuned.
 - [x] [2022-03-18] Inference code, pretrained weights, and data for A2D-S+ released.
-- [x] [2022-03-21] arXiv (full paper available)
+- [x] [2022-03-21] [arXiv](https://arxiv.org/abs/2203.09773) (full paper available)
 - [ ] Instructions on usage
 - [ ] Training code and detailed instructions
 - [ ] Code for dataset creation
