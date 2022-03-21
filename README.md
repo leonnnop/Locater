@@ -5,14 +5,14 @@
 </div>
 
 > This repository is an official PyTorch implementation of paper:<br>
-> [Local-Global Context Aware Transformer for Language-Guided Video Segmentation]().<br>
+> [Local-Global Context Aware Transformer for Language-Guided Video Segmentation](https://arxiv.org/abs/2203.09773).<br>
 > [Chen Liang](https://leonnnop.github.io/), [Wenguan Wang](https://sites.google.com/view/wenguanwang/), [Tianfei Zhou](https://www.tfzhou.com/), [Jiaxu Miao](https://scholar.google.com/citations?user=kQ-FWd8AAAAJ&hl=en), [Yawei Luo](https://scholar.google.com.sg/citations?user=pnVwaGsAAAAJ&hl=en), [Yi Yang](https://scholar.google.com/citations?user=RMSuNFwAAAAJ&hl=zh-CN) <br>
 > arXiv 2022.
 
 ## News & Update Logs:
 - [x] [2022-03-17] Repo created. Paper, code, and data will come in a few days. Stay tuned.
 - [x] [2022-03-18] Inference code, pretrained weights, and data for A2D-S+ released.
-- [ ] arXiv (full paper)
+- [x] [2022-03-21] arXiv (full paper available)
 - [ ] Instructions on usage
 - [ ] Training code and detailed instructions
 - [ ] Code for dataset creation
@@ -78,18 +78,18 @@ The implementation codes of Locater are released under the MIT license.
 Find details in the [LICENSE](LICENSE) file for more information.
 
 
-<!-- ## Citation
+## Citation
 
 If you find Locater useful or inspiring, please consider citing:
 
 ```bibtex
-@inproceedings{zhang2022-SAMDETR,
-  title      = {Accelerating {DETR} Convergence via Semantic-Aligned Matching},
-  author     = {Zhang, Gongjie and Luo, Zhipeng and Yu, Yingchen and Cui, Kaiwen and Lu, Shijian},
-  booktitle  = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+@article{liang2022locater,
+  title      = {Local-Global Context Aware Transformer for Language-Guided Video},
+  author     = {Liang, Chen and Wang, Wenguan and Zhou, Tianfei and Miao, Jiaxu and Luo, Yawei and Yang, Yi},
+  journal  = {arXiv preprint arXiv:2203.09773},
   year       = {2022}
 }
-``` -->
+```
 
 ## Acknowledgment
 
