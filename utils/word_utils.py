@@ -13,7 +13,6 @@ import random
 UNK_TOKEN = '<unk>'
 PAD_TOKEN = '<pad>'
 MASK_TOKEN = '<mask>'
-# SENTENCE_SPLIT_REGEX = re.compile(r'(\W+)')
 SENTENCE_SPLIT_REGEX = re.compile(r'([\w+\']+)')
 
 
@@ -65,7 +64,6 @@ class Corpus(object):
         """Tokenizes a text line."""
         # Add words to the dictionary
         words = line.split()
-        # tokens = len(words)
         for word in words:
             word = word.lower()
             self.dictionary.add_word(word)
@@ -83,7 +81,6 @@ class Corpus(object):
             nlp = spacy.load("en_core_web_sm")
             doc = nlp(line)
             words = [token.text.lower() if token.dep_ != 'nsubj' else MASK_TOKEN for token in doc]
-            # print(words)
         else:
             words = SENTENCE_SPLIT_REGEX.split(line.strip())
             words = [w.lower() for w in words if len(w) > 0 and w != ' ']

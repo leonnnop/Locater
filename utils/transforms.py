@@ -13,10 +13,7 @@ from torch.autograd import Variable
 from torchvision.transforms import functional as tF
 
 import torch
-# from .instaboost import get_new_data, InstaBoostConfig
-
 from general_util import save_p_img, save_rgb_img
-# from .instaboost.get_instance_group import get_coco_masks, cocoseg_to_binary
 
 import random
 
@@ -63,16 +60,10 @@ class CropResize:
         im_h, im_w = img.data.shape[:2]
         input_h, input_w = size
         scale = max(input_h / im_h, input_w / im_w)
-        # scale = torch.Tensor([[input_h / im_h, input_w / im_w]]).max()
         resized_h = int(np.round(im_h * scale))
-        # resized_h = torch.round(im_h * scale)
         resized_w = int(np.round(im_w * scale))
-        # resized_w = torch.round(im_w * scale)
         crop_h = int(np.floor(resized_h - input_h) / 2)
-        # crop_h = torch.floor(resized_h - input_h) // 2
         crop_w = int(np.floor(resized_w - input_w) / 2)
-        # crop_w = torch.floor(resized_w - input_w) // 2
-        # resized_img = cv2.resize(img, (resized_w, resized_h))
         resized_img = F.interpolate(
             img.unsqueeze(0).unsqueeze(0), size=(resized_h, resized_w),
             mode='bilinear', align_corners=True)
@@ -218,11 +209,7 @@ class BalancedRandomCropT(object):
         self.min_obj_pixel_num = min_obj_pixel_num
 
     def __call__(self, input):
-        # crop 成 output 大小，然后 resized 到 input
         img, mask, instance = input
-        # print(img.shape)
-        # print(mask.shape)
-        # print(instance.shape)
         h, w = img.shape[-2:]
         new_h, new_w = self.output_size
         new_h = h if new_h >= h else new_h
@@ -300,20 +287,14 @@ class CopyPaste(object):
 
         if torch.rand(1) < self.p:
             mask = mask.int().numpy().astype(np.uint8)
-            # img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
             img = img[0]
 
             mask, img = get_new_data(mask, img, self.cfg, background=None)
 
-            # print(mask)
             width = img.shape[1]
             height = img.shape[0]
 
             mask, labels = get_coco_masks(mask, height, width)
-
-            # rnd = random.random()
-            # save_p_img(mask, str(rnd)+'temp_mask.png')
-            # save_rgb_img(img, str(rnd)+'temp_rgb.png')
 
             img = [img[None,:,:,:]]
             img = np.concatenate(img, axis=0)
@@ -338,7 +319,6 @@ class RandomHorizontalFlip(object):
         if flip_flag:
             img = tF.hflip(img)
             mask = tF.hflip(mask)
-            # instance = tF.hflip(instance)
 
         if flip_flag:
             ori = phrase

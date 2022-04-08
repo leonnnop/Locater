@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-ReferIt, UNC, UNC+ and GRef referring image segmentation PyTorch dataset.
-
-Define and group batches of images, segmentations and queries.
-Based on:
-https://github.com/chenxi116/TF-phrasecut-public/blob/master/build_batches.py
-"""
-
 import os
 import sys
 sys.path.append('.')
@@ -70,7 +62,7 @@ class Seq_Test(data.Dataset):
         if current_label_name in self.labels:
             current_label = self.read_label(current_label_name)
         else:
-            # * prepare a minus mask for testing
+            # * prepare a small mask for testing
             current_label = torch.from_numpy(np.zeros_like(img)[:,:,:,0]) - 1.
 
         if self.transform is not None:

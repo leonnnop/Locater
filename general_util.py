@@ -25,21 +25,16 @@ def save_rgb_img(img, img_name, mul=False):
         else:
             img = img.byte()
         img = img.cpu().numpy().squeeze().transpose((1, 2, 0))
-    # print(img.shape)
     img = Image.fromarray(img)
-    # img.convert('rgb')
     img.save(img_name)
 
 def save_prob_img(img, img_name):
     if isinstance(img, torch.Tensor):
         img = img.mul(255).byte()
         img = img.cpu().numpy().squeeze()
-    # print(img.shape)
     img = Image.fromarray(img)
-    # img.convert('rgb')
     img.save(img_name)
 
-# 计算向量距离矩阵
 # B,C -> B,B
 def calc_cdist(a, b, metric='euclidean'):
     diff = a[:, None, :] - b[None, :, :]
@@ -56,7 +51,6 @@ def replace_apex(str_1, apex):
     str_1 = str_1.split('.')[-2] + '.' + apex
     return str_1
 
-# 计算数字距离
 # B -> B,B
 def calc_ndist(a,b):
     return a[:,None] - b[None,:]

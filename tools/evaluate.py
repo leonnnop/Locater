@@ -70,7 +70,7 @@ if args.N1_test == -1:
 args.distributed = False
 if 'WORLD_SIZE' in os.environ:
     args.distributed = int(os.environ['WORLD_SIZE']) > 1
-    sync_print('use distribute method', args)
+    sync_print('Use distributed method', args)
 
 args.world_size = 1
 if args.distributed:
@@ -80,9 +80,7 @@ if args.distributed:
     args.world_size = torch.distributed.get_world_size()
 
 args_dict = vars(args)
-
 args.cuda = not args.no_cuda and torch.cuda.is_available()
-
 image_size = (args.size, args.size)
 
 input_transform_val = Compose([
@@ -109,7 +107,7 @@ val_loader = DataLoader(refer_val, batch_size=1,
                         collate_fn=test_collate_fn
                         )
 
-sync_print('dataset loaded', args)
+sync_print('Dataset loaded', args)
 
 net = VLFTrans(img_dim=args.size, in_chans=args.in_chans)
 
@@ -120,7 +118,6 @@ net.load_state_dict(snapshot_dict)
 
 if args.distributed:
     net = torch.nn.SyncBatchNorm.convert_sync_batchnorm(net).cuda()
-    # net = net.to(device)
     net = torch.nn.parallel.DistributedDataParallel(
         net,
         find_unused_parameters=True,
@@ -183,15 +180,13 @@ def evaluate():
             valid_labels = seq_dataset.labels
 
             for batch_idx, (imgs, mask) in enumerate(seq_dataloader):
-                if (mask.min() != -1.):
-                    if args.cuda:
-                        imgs = imgs.cuda()
-                        mask = mask.float().cuda()
+                if args.cuda:
+                    imgs = imgs.cuda()
+                    mask = mask.float().cuda()
 
-                    out_masks, _attns = net(vis=imgs, lang=words)
+                out_masks, _attns = net(vis=imgs, lang=words)
 
-
-                # * there exists no empty mask in A2D
+                # * example w/ ground-truth
                 if mask.min() != -1.:
 
                     out_mask = out_masks[-1]
@@ -207,18 +202,14 @@ def evaluate():
 
                     seg_total += 1
 
-                    max_prob = 0.5
-
-                    thresholded_out = (out > max_prob).float().data
-                    iter, union = compute_mask_IU(thresholded_out, mask)
-                    cum_I += iter
+                    thresholded_out = (out > 0.5).float().data
+                    inter, union = compute_mask_IU(thresholded_out, mask)
+                    cum_I += inter
                     cum_U += union
 
-                    # for temp setting empty mask
                     if union == 0:
                         iou = 1.
-                    else:
-                        iou = iter / union
+                    else: iou = inter / union
 
                     meaniou += iou
 
@@ -238,21 +229,22 @@ def evaluate():
         mean = meaniou / seg_total
 
         if args.local_rank == 0:
-            print('precision@X for custom Threshold')
+            print('-' * 32)
+            print('Precision@X')
             for idx, seg_iou in enumerate(eval_seg_iou_list):
                 rep_idx = eval_seg_iou_list.index(eval_seg_iou_list[idx])
                 print('precision@{:s} = {:.5f}'.format(
                     str(seg_iou), float(seg_correct[rep_idx] / seg_total)))
             print('-' * 32)
 
-            print('custom mAP.5:.95 = {:.5f}'.format(float(torch.mean(seg_correct)) / float(seg_total)))
+            print('mAP.5:.95 = {:.5f}'.format(float(torch.mean(seg_correct)) / float(seg_total)))
             print('-' * 32)
 
         # Print maximum IoU
         if args.local_rank == 0:
             print('Evaluation done. Elapsed time: {:.3f} (s) '.format(
                 time.time() - start_time))
-            print('custom o-iou: {:<15.13f} | custom m-iou: {:<15.13f}'.format(float(overall), float(mean)))
+            print('o-iou: {:<15.13f} | m-iou: {:<15.13f}'.format(float(overall), float(mean)))
 
     return float(overall), float(mean)
 

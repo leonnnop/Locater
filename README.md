@@ -86,7 +86,7 @@ If you find Locater useful or inspiring, please consider citing:
 @article{liang2022locater,
   title      = {Local-Global Context Aware Transformer for Language-Guided Video},
   author     = {Liang, Chen and Wang, Wenguan and Zhou, Tianfei and Miao, Jiaxu and Luo, Yawei and Yang, Yi},
-  journal  = {arXiv preprint arXiv:2203.09773},
+  journal    = {arXiv preprint arXiv:2203.09773},
   year       = {2022}
 }
 ```
